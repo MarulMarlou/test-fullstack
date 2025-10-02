@@ -1,27 +1,27 @@
 ﻿# Test Fullstack App
 
-A compact full-stack playground that serves a very large in-memory dataset through an Express API and renders it with a React UI. The project demonstrates batched queue processing on the backend and infinite scrolling with selection management on the frontend.
+Небольшое учебное full-stack приложение: бэкенд на Express обслуживает огромный набор данных из памяти, а фронтенд на React показывает их с бесконечной подгрузкой и управлением выбранными элементами.
 
-## Features
+## Возможности
 
-- **Backend (Express + Node.js)**
-  - Generates 1,000,000 synthetic items on startup.
-  - Queue-based batching for add/select/sort operations to keep the store consistent under load.
-  - REST endpoints for pagination (/api/items), selection toggling (/api/select), ordering (/api/sort) and state persistence (/api/state).
+- **Бэкенд (Node.js + Express)**
+  - При старте генерирует 1 000 000 элементов в памяти.
+  - Использует очереди и батчинг для операций добавления, выбора и сортировки.
+  - REST‑эндпоинты для пагинации (`/api/items`), переключения выбранных (`/api/select`), сохранения порядка (`/api/sort`) и работы с состоянием (`/api/state`).
 
-- **Frontend (React + Axios)**
-  - Two-panel layout: “All items” with infinite scroll, and “Selected items” with drag & drop ordering.
-  - Local persistence of the selected list via localStorage.
-  - Modern styling with subtle gradients, custom scrollbars and draggable handles.
+- **Фронтенд (React + Axios)**
+  - Две панели: «Все элементы» с бесконечным скроллом и «Выбранные элементы» с drag&drop.
+  - Сохраняет выбранные элементы и их порядок в `localStorage`.
+  - Современный дизайн с мягкими цветами, кастомными скроллами и ручкой для перетаскивания.
 
-## Prerequisites
+## Требования
 
 - Node.js >= 18
-- npm (comes with Node.js)
+- npm (устанавливается вместе с Node.js)
 
-## Project Structure
+## Структура проекта
 
-`
+```
 backend/
   src/
     server.js
@@ -32,64 +32,57 @@ frontend/
   src/
     components/
     hooks/
-`
+```
 
-## Getting Started
+## Как запустить
 
-### 1. Clone the repository
+1. Клонируйте репозиторий
+   ```bash
+   git clone https://github.com/MarulMarlou/test-fullstack.git
+   cd test-fullstack
+   ```
 
-`ash
-git clone https://github.com/MarulMarlou/test-fullstack.git
-cd test-fullstack
-`
+2. Установите зависимости
+   - Бэкенд:
+     ```bash
+     cd backend
+     npm install
+     ```
+   - Фронтенд:
+     ```bash
+     cd ../frontend
+     npm install
+     ```
 
-### 2. Install dependencies
+3. Запустите приложения
+   - Бэкенд (из папки `backend`):
+     ```bash
+     node src/server.js
+     ```
+     Сервер слушает `http://localhost:4000`.
+   - Фронтенд (из папки `frontend`):
+     ```bash
+     npm start
+     ```
+     UI откроется на `http://localhost:3000` с hot reload.
 
-Backend:
-`ash
-cd backend
-npm install
-`
+## API
 
-Frontend:
-`ash
-cd ../frontend
-npm install
-`
+| Метод | Эндпоинт       | Описание                                                      |
+|-------|---------------|----------------------------------------------------------------|
+| GET   | `/api/items`  | Пагинированный список (параметры `offset`, `limit`, `selected`, `filter`). |
+| POST  | `/api/items`  | Добавление нового элемента по ID (попадает в очередь).          |
+| POST  | `/api/select` | Переключение выбранных элементов по массиву ID.                 |
+| POST  | `/api/sort`   | Сохранение порядка выбранных элементов.                        |
+| GET   | `/api/state`  | Получение сохранённого состояния выбора.                       |
+| POST  | `/api/state`  | Полная замена сохранённого состояния.                           |
 
-### 3. Run the apps
+## UX заметки
 
-Start the API server (from ackend directory):
-`ash
-node src/server.js
-`
-The server listens on http://localhost:4000 by default.
+- Подгрузка происходит батчами по 20 элементов.
+- Выбранные элементы можно перетаскивать, порядок сохраняется между сессиями.
+- Макет адаптирован под планшетные ширины.
 
-Start the React dev server (from rontend directory):
-`ash
-npm start
-`
-This launches the UI on http://localhost:3000 with hot reload.
+## Лицензия
 
-Ensure both servers are running to experience the full application.
-
-## API Overview
-
-| Method | Endpoint          | Description                                      |
-|--------|-------------------|--------------------------------------------------|
-| GET    | /api/items      | Paginated items list (offset, limit, selected, ilter). |
-| POST   | /api/items      | Add a new item by ID (batched via queue).       |
-| POST   | /api/select     | Toggle selection for an array of IDs.           |
-| POST   | /api/sort       | Persist ordering for the selected collection.   |
-| GET    | /api/state      | Fetch persisted selection state.                |
-| POST   | /api/state      | Overwrite selection state (used for restore).   |
-
-## Styling & UX Notes
-
-- Infinite scroll fetches items in batches of 20 for both panels.
-- Selected items can be reordered via drag handles; changes persist across reloads.
-- The layout is responsive down to tablet widths.
-
-## License
-
-This project is provided for educational purposes. Use freely.
+Проект создан в учебных целях, можно использовать свободно.
