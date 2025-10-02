@@ -14,7 +14,7 @@ const ListPanel = forwardRef(({ onMoved }, ref) => {
 
   const handleSelect = async id => {
     try {
-      await axios.post('http://localhost:4000/api/select', { ids: [id] });
+      await axios.post('https://readably-bienvenu-alena.ngrok-free.dev/api/select', { ids: [id] });
       await onMoved();
     } catch (e) {
       console.error(e);
@@ -24,7 +24,7 @@ const ListPanel = forwardRef(({ onMoved }, ref) => {
   const handleAdd = async () => {
     if (!newId) return;
     try {
-      await axios.post('http://localhost:4000/api/items', { id: Number(newId) });
+      await axios.post('https://readably-bienvenu-alena.ngrok-free.dev/api/items', { id: Number(newId) });
       setNewId('');
       await onMoved();
     } catch (e) {

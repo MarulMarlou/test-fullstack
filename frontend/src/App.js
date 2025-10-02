@@ -10,7 +10,7 @@ function App() {
 
   const saveState = useCallback(async () => {
     try {
-      const response = await axios.get('http://localhost:4000/api/state');
+      const response = await axios.get('https://readably-bienvenu-alena.ngrok-free.dev/api/state');
       localStorage.setItem('app-state', JSON.stringify(response.data));
     } catch (e) {
       console.error('Failed to save state:', e);
@@ -43,7 +43,7 @@ function App() {
         const savedState = localStorage.getItem('app-state');
         if (savedState) {
           const state = JSON.parse(savedState);
-          await axios.post('http://localhost:4000/api/state', state);
+          await axios.post('https://readably-bienvenu-alena.ngrok-free.dev/api/state', state);
         }
         await refreshBoth();
       } catch (e) {

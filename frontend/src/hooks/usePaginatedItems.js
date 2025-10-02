@@ -32,7 +32,7 @@ export default function usePaginatedItems({ selected }) {
       setIsLoading(true);
 
       try {
-        const { data } = await axios.get('http://localhost:4000/api/items', {
+        const { data } = await axios.get('https://readably-bienvenu-alena.ngrok-free.dev/api/items', {
           params: {
             selected,
             filter,

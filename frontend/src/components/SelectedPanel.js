@@ -37,7 +37,7 @@ const SelectedPanel = forwardRef(({ onMoved }, ref) => {
 
   const handleUnselect = async id => {
     try {
-      await axios.post('http://localhost:4000/api/select', { ids: [id] });
+      await axios.post('https://readably-bienvenu-alena.ngrok-free.dev/api/select', { ids: [id] });
       setLocalItems(prev => prev.filter(item => item.id !== id));
       await onMoved();
     } catch (e) {
@@ -56,7 +56,7 @@ const SelectedPanel = forwardRef(({ onMoved }, ref) => {
       setLocalItems(newOrder);
 
       try {
-        await axios.post('http://localhost:4000/api/sort', {
+        await axios.post('https://readably-bienvenu-alena.ngrok-free.dev/api/sort', {
           order: newOrder.map(i => i.id)
         });
         await onMoved();
