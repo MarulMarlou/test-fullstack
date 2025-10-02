@@ -5,7 +5,7 @@ import { CSS } from '@dnd-kit/utilities';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import ItemCard from './ItemCard';
 import usePaginatedItems from '../hooks/usePaginatedItems';
-import axios from 'axios';
+import { apiClient } from '../utils/apiClient';
 
 function SortableItem({ id, item, onUnselect }) {
   const { attributes, listeners, setNodeRef, setActivatorNodeRef, transform, transition } = useSortable({ id });
@@ -37,7 +37,7 @@ const SelectedPanel = forwardRef(({ onMoved }, ref) => {
 
   const handleUnselect = async id => {
     try {
-      await axios.post('https://readably-bienvenu-alena.ngrok-free.dev/api/select', { ids: [id] });
+      await apiClient.post('/api/select', { ids: [id] });
       setLocalItems(prev => prev.filter(item => item.id !== id));
       await onMoved();
     } catch (e) {
@@ -56,7 +56,7 @@ const SelectedPanel = forwardRef(({ onMoved }, ref) => {
       setLocalItems(newOrder);
 
       try {
-        await axios.post('https://readably-bienvenu-alena.ngrok-free.dev/api/sort', {
+        await apiClient.post('/api/sort', {
           order: newOrder.map(i => i.id)
         });
         await onMoved();

@@ -2,7 +2,7 @@ import React, { forwardRef, useImperativeHandle, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import ItemCard from './ItemCard';
 import usePaginatedItems from '../hooks/usePaginatedItems';
-import axios from 'axios';
+import { apiClient } from '../utils/apiClient';
 
 const ListPanel = forwardRef(({ onMoved }, ref) => {
   const { filter, setFilter, items, hasMore, fetchMore, isLoading, reset } = usePaginatedItems({ selected: false });
@@ -14,7 +14,7 @@ const ListPanel = forwardRef(({ onMoved }, ref) => {
 
   const handleSelect = async id => {
     try {
-      await axios.post('https://readably-bienvenu-alena.ngrok-free.dev/api/select', { ids: [id] });
+      await apiClient.post('/api/select', { ids: [id] });
       await onMoved();
     } catch (e) {
       console.error(e);
@@ -24,7 +24,7 @@ const ListPanel = forwardRef(({ onMoved }, ref) => {
   const handleAdd = async () => {
     if (!newId) return;
     try {
-      await axios.post('https://readably-bienvenu-alena.ngrok-free.dev/api/items', { id: Number(newId) });
+      await apiClient.post('/api/items', { id: Number(newId) });
       setNewId('');
       await onMoved();
     } catch (e) {

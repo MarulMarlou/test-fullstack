@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import axios from 'axios';
+import { apiClient } from '../utils/apiClient';
 
 const LIMIT = 20;
 
@@ -32,22 +32,24 @@ export default function usePaginatedItems({ selected }) {
       setIsLoading(true);
 
       try {
-        const { data } = await axios.get('https://readably-bienvenu-alena.ngrok-free.dev/api/items', {
-          params: {
-            selected,
-            filter,
-            offset,
-            limit: LIMIT
-          }
-        });
+        const { data } = await apiClient.get('/api/items', {
+            params: {
+              selected,
+              filter,
+              offset,
+              limit: LIMIT
+            }
+          });
 
         if (version !== versionRef.current) {
           return;
         }
 
-        offsetRef.current = offset + data.length;
-        setItems(prev => (append ? mergeUnique(prev, data) : data));
-        setHasMore(data.length === LIMIT);
+        const nextItems = Array.isArray(data) ? data : [];
+
+        offsetRef.current = offset + nextItems.length;
+        setItems(prev => (append ? mergeUnique(prev, nextItems) : nextItems));
+        setHasMore(nextItems.length === LIMIT);
       } catch (err) {
         if (version === versionRef.current) {
           console.error(err);
