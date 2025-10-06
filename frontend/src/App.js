@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import './App.css';
 import ListPanel from './components/ListPanel';
 import SelectedPanel from './components/SelectedPanel';
-import axios from 'axios';
+import { apiClient } from './utils/apiClient';
 
 function App() {
   const listRef = useRef();
@@ -10,7 +10,7 @@ function App() {
 
   const saveState = useCallback(async () => {
     try {
-      const response = await axios.get('https://readably-bienvenu-alena.ngrok-free.dev/api/state');
+      const response = await apiClient.get('/api/state');
       localStorage.setItem('app-state', JSON.stringify(response.data));
     } catch (e) {
       console.error('Failed to save state:', e);
@@ -43,7 +43,7 @@ function App() {
         const savedState = localStorage.getItem('app-state');
         if (savedState) {
           const state = JSON.parse(savedState);
-          await axios.post('https://readably-bienvenu-alena.ngrok-free.dev/api/state', state);
+          await apiClient.post('/api/state', state);
         }
         await refreshBoth();
       } catch (e) {
