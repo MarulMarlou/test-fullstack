@@ -8,7 +8,9 @@ async function getItems({ selected = false, filterId, offset = 0, limit = 20 }) 
         const operation = () => {
             const all = selected ? store.selected : store.items;
             let filtered = filterId ? all.filter(item => item.id.toString().includes(filterId)) : all;
-            resolve(filtered.slice(offset, offset + limit));
+            const result = filtered.slice(offset, offset + limit);
+            console.log('getItems result', { selected, filter: filterId || '', offset, limit, returned: result.length });
+            resolve(result);
         };
         taskQueue.enqueueUpdate(`get-${Date.now()}-${Math.random()}`, operation);
     });
